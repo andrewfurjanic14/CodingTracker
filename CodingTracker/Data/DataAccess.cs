@@ -3,9 +3,10 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace CodingTracker
+namespace CodingTracker.Data
 {
     internal class DataAccess
     {
@@ -34,7 +35,7 @@ namespace CodingTracker
             con.Execute(sql, session);
         }
 
-        public List<CodingSession> SelectAllSessions()
+        public List<CodingSession> SelectSessions()
         {
             string sql = 
                 """
@@ -48,6 +49,49 @@ namespace CodingTracker
                 """;
             using var con = new SqliteConnection(_connectionString);
             return con.Query<CodingSession>(sql).ToList();
+        }
+        public List<CodingSession> SelectSessions(string date)
+        {
+            string sql =
+                """
+                SELECT
+                    Id,
+                    StartTime,
+                    EndTime,
+                    DurationMinutes,
+                    Date
+                FROM CodingSessions
+                WHERE Date = @Date;
+                """;
+            using var con = new SqliteConnection(_connectionString);
+            return con.Query<CodingSession>(sql, new { Date = date }).ToList();
+        }
+
+        public void DeleteSession(CodingSession session)
+        {
+            string sql =
+                """
+                DELETE FROM CodingSessions
+                WHERE Id = @Id
+                """;
+            using var con = new SqliteConnection(_connectionString);
+            con.Execute(sql, session);
+        }
+
+        public void UpdateSession(CodingSession session)
+        {
+            string sql =
+                """
+                UPDATE CodingSessions
+                SET
+                    StartTime = @StartTime,
+                    EndTime = @EndTime,
+                    DurationMinutes = @DurationMinutes,
+                    Date = @Date
+                WHERE Id = @Id
+                """;
+            var con = new SqliteConnection(_connectionString);
+            con.Execute(sql, session);
         }
 
         public void TestConnection()

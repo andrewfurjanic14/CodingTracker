@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodingTracker
+namespace CodingTracker.Data
 {
     internal class CodingSession
     {
@@ -20,15 +20,29 @@ namespace CodingTracker
             DurationMinutes = duration;
             Date = date;
         }
+        public CodingSession(int id, (string startTime, string endTime, int duration) timeInfo, string date)
+        {
+            Id = id;
+            StartTime = timeInfo.startTime;
+            EndTime = timeInfo.endTime;
+            DurationMinutes = timeInfo.duration;
+            Date = date;
+        }
+        public CodingSession((string startTime, string endTime, int duration) timeInfo, string date)
+        {
+            StartTime = timeInfo.startTime;
+            EndTime = timeInfo.endTime;
+            DurationMinutes = timeInfo.duration;
+            Date = date;
+        }
         public override string ToString()
         {
             string output =
                 $"""
-                Id: {Id}
-                Start Time: {StartTime}
-                End Time: {EndTime}
-                Duration: {DurationMinutes}
                 Date: {Date}
+                Start Time: {StartTime}, End Time: {EndTime}
+                Duration: {DurationMinutes}
+                Id: {Id}
                 """;
             return output;
         }

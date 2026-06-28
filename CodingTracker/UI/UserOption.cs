@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodingTracker
+namespace CodingTracker.UI
 {
     enum UIOptionKeyword
     {
@@ -10,7 +10,10 @@ namespace CodingTracker
         Log,
         Delete,
         Update,
-        Exit
+        Exit,
+
+        ChooseFromAll,
+        ChooseFromDate
     }
     internal class UserOption
     {
